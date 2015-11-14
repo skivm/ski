@@ -1,0 +1,11 @@
+--- linux-2.6.28/Makefile	2008-12-25 00:26:37.000000000 +0100
++++ linux-2.6.28-patched/Makefile	2013-07-01 17:34:14.462298183 +0200
+@@ -510,7 +510,7 @@
+ all: vmlinux
+ 
+ ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
+-KBUILD_CFLAGS	+= -Os
++KBUILD_CFLAGS	+= -O1 -fno-if-conversion -fno-if-conversion2 -fno-delayed-branch -fno-tree-fre -fno-tree-dominator-opts -fno-cprop-registers
+ else
+ KBUILD_CFLAGS	+= -O2
+ endif

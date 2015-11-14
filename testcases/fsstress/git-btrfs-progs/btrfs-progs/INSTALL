@@ -1,0 +1,54 @@
+Install Instructions
+
+Btrfs uses libcrc32c in the kernel for file and metadata checksums.  You need
+to compile the kernel with:
+
+CONFIG_LIBCRC32C=m
+
+libcrc32c can be static as well.  Once your kernel is setup, typing make in the
+btrfs module sources will build against the running kernel.  When the build is
+complete:
+
+modprobe libcrc32c
+insmod btrfs.ko
+
+The Btrfs utility programs require libuuid to build.  This can be found
+in the e2fsprogs sources, and is usually available as libuuid or
+e2fsprogs-devel from various distros.
+
+Building the utilities is just make ; make install.  The programs go
+into /usr/local/bin.  The mains commands available are:
+
+mkfs.btrfs: create a filesystem
+
+btrfs: control program to create snapshots and subvolumes:
+	# mount a btrfs filesystem
+	mount /dev/sda2 /mnt
+
+	# create a subvolume
+	btrfs subvolume create /mnt/new_subvol_name
+
+	# snapshot of a subvolume
+	btrfs subvolume snapshot /mnt/default /mnt/snapshot_of_default 
+	btrfs subvolume snapshot /mnt/snapshot_of_default \
+		/mnt/snapshot_of_a_snapshot
+
+	# list of the subvolumes
+	ls /mnt
+	default snapshot_of_a_snapshot snapshot_of_new_subvol
+	new_subvol_name snapshot_of_default
+
+	# removal of a subvolume or a snapshot
+	btrfs subvolume delete /mn/snapshot_of_a_snapshot
+
+	# look a the btrfs man page for further information
+	man btrfs
+
+btrfsck: do a limited check of the FS extent trees.</li>
+
+btrfs-debug-tree: print all of the FS metadata in text form.  Example:
+
+	btrfs-debug-tree /dev/sda2 >& big_output_file
+
+
+
